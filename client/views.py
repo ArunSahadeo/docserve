@@ -96,7 +96,7 @@ def library_resource(request, name, version):
             return JsonResponse(data)
 
         try:
-            library_version = Version.objects.get(name=name, version=version)
+            library_version = Version.objects.get(library_id=library.id, version=version)
         except Version.DoesNotExist:
             data = {}
             data['status'] = '404'
@@ -104,7 +104,7 @@ def library_resource(request, name, version):
             return JsonResponse(data)
 
         try:
-            library_resource = Resource.objects.get(version=library_version)
+            library_resource = Resource.objects.get(version_id=library_version.id)
         except Resource.DoesNotExist:
             data = {}
             data['status'] = '404'

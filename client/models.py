@@ -25,11 +25,7 @@ class Version(models.Model):
         ordering = ('created',)
 
 class Resource(models.Model):
-    version         = models.OneToOneField(
-        Version,
-        on_delete=models.CASCADE,
-        primary_key = True
-    ),
+    version_id = models.ForeignKey(Version, on_delete=models.CASCADE)
     repoREADME      = models.URLField(max_length=255, blank=True)
     websiteLanding  = models.URLField(max_length=255, blank=True)
     websiteDocs     = models.URLField(max_length=255, blank=True)
