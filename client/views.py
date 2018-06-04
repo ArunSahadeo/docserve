@@ -62,22 +62,23 @@ def library_version(request, name, version_string):
 
     if request.method == 'GET':
         try:
-            try:
-                related_library = Library.objects.get(name=name)
-            except Library.DoesNotExist:
-                data = {}
-                data['status'] = '404'
-                data['content'] = str('Could not find a library called "%s"' % (name))
+            related_library = Library.objects.get(name=name)
+        except Library.DoesNotExist:
+            data = {}
+            data['status'] = '404'
+            data['content'] = str('Could not find a library called "%s"' % (name))
+            return JsonResponse(data)
 
+        try:
             library_version = Version.objects.get(library_id=related_library.id, version=version_string)
-            serializer = VersionSerializer(library_version)
-            return JsonResponse(serializer.data)
         except Version.DoesNotExist:
-                data = {}
-                data['status'] = '404'
-                data['content'] = str('Could not find version %s for a library called "%s"' % (version_string, name))
-
-        return JsonResponse(data)
+            data = {}
+            data['status'] = '404'
+            data['content'] = str('Could not find version %s for library "%s"' % (version_string, name) )
+            return JsonResponse(data)
+            
+        serializer = VersionSerializer(library_version)
+        return JsonResponse(serializer.data)
 
 @csrf_exempt
 def library_resource(request, name, version):
