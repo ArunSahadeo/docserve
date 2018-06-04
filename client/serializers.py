@@ -14,4 +14,4 @@ class VersionSerializer(serializers.ModelSerializer):
 class ResourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Resource
-        fields = ('repoREADME', 'websiteLanding', 'websiteDocs')
+        fields = ('version_id', 'repoREADME', 'websiteLanding', 'websiteDocs')

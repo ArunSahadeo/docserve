@@ -116,6 +116,15 @@ def library_resource(request, name, version):
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
+        if 'version_id' not in data:
+            try:
+                related_version = Version.objects.get(version=version)
+            except Version.DoesNotExist:
+                data = {}
+                data['status'] = '404'
+                data['content'] = str('Version %s does not exist for library "%s"' % (version, name))
+                return JsonResponse(data)
+            data['version_id'] = related_version.id
         serializer = ResourceSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
